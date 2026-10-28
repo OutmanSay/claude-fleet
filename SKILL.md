@@ -62,8 +62,11 @@ rex split -s "$REX_SESSION" -b <上一个僚舰的block> --split=below --ratio 5
 
 ```bash
 rex send -s "$REX_SESSION" -b <block_id> '<任务文本>' && \
-rex send-key -s "$REX_SESSION" -b <block_id> enter
+rex send-key -s "$REX_SESSION" -b <block_id> enter && \
+sleep 1 && rex capture -s "$REX_SESSION" -b <block_id> --trim | tail -3  # 核验：输入框应空、有 Working/思考标记
 ```
+
+⚠️ **核验必做（2026-10-28 三次漏按教训）**：send-key enter 后必须 `rex capture` 确认——屏幕应显示「Working/thinking」或输入框已空。若文字仍停在输入框（↑标记），说明没提交，补发 enter。
 
 任务文本里**必须带这三条指令**（否则它不回报、乱动 rex、舰内协同断）：
 
