@@ -57,6 +57,7 @@ ln -sf $(pwd)/claude-fleet ~/.claude/skills/fleet
 /fleet              # 起 1 个僚舰
 /fleet up 2         # 起 2 个（右侧叠）
 /fleet send 僚舰-1 监控XXX每10分钟一次
+/fleet send 僚舰-2 把X归档到Y
 /fleet ls           # 编队状态
 /fleet down         # 收编
 ```
@@ -68,8 +69,9 @@ skill 里写明了派活 prompt 模板（**必须带「别动 rex session」「�
 skill 是放在 `~/.claude/skills/fleet/` 下的 `SKILL.md`——Claude Code 启动时自动加载这个目录里所有 skill。装好以后在任何 Rex session 的 claude 里输 `/fleet` 就触发。
 
 - **旗舰** = 你正在对话的那个 claude session
-- **僚舰** = 它 split 出的独立 claude 进程，每个有自己的 session ID（`ListAgents` 工具可查）
-- **通讯** = CC 内置 `SendMessage`/`ListAgents` 工具，跨 session 发消息；`rex send`/`rex capture` 是 Rex CLI 命令，直接读写别的进程屏幕
+- **僚舰** = 它 split 出的独立 claude 进程，命名 `僚舰-N-职能`（僚舰-1-哨兵、僚舰-2-苦力），每个有自己的 session ID（`ListAgents` 可查）
+- **通讯** = CC 内置 `SendMessage`/`ListAgents` 跨 session 发消息；`rex send`/`rex capture` 读写别的进程屏幕
+- **舰内协同** = `/tmp/fleet-shared.log` 共享黑板——僚舰干完追加一行，监控类僚舰消费剔除已办项（见 SKILL.md `/fleet share`）
 
 ## 关键差异
 
