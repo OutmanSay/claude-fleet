@@ -6,6 +6,8 @@
 
 ## 长这样
 
+![Fleet in action](docs/fleet-screenshot.png)
+
 ```
 ┌─────────────────────────┬──────────────────┐
 │                         │                  │
