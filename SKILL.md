@@ -73,6 +73,8 @@ rex send-key -s "$REX_SESSION" -b <block_id> enter
 你是僚舰-N（职能名），每干完一件可复用的事就往 /tmp/fleet-shared.log 追加一行 `HH:MM <僚舰名>: <干了什么> | 产物:<路径>`。
 ```
 
+⚠️ **任务命中已有 skill 时（2026-10-28 补）**：派活 prompt 里加一句「**先读 `~/.openclaw/skills/<skill-name>/SKILL.md` 按契约走**」。skill 是唯一真源（msg-monitor 有控制台命令+展示约定、yishitong 有标准审批流），不要让僚舰按口述流程瞎跑——它不会自动加载 skill，只会按你写的字面做。
+
 ### `/fleet ls`
 
 列编队状态：`rex block ls -s "$REX_SESSION"` + `ListAgents` 对号。
