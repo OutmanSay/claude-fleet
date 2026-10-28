@@ -63,6 +63,18 @@ ln -sf $(pwd)/claude-fleet ~/.claude/skills/fleet
 
 skill 里写明了派活 prompt 模板（**必须带「别动 rex session」「完事 SendMessage 给旗舰」**，否则僚舰会乱改你 session 名、干完也不汇报）。
 
+## Quick Start
+
+skill 是放在 `~/.claude/skills/fleet/` 下的 `SKILL.md`——Claude Code 启动时自动加载这个目录里所有 skill。装好以后在任何 Rex session 的 claude 里输 `/fleet` 就触发。
+
+- **旗舰** = 你正在对话的那个 claude session
+- **僚舰** = 它 split 出的独立 claude 进程，每个有自己的 session ID（`ListAgents` 工具可查）
+- **通讯** = CC 内置 `SendMessage`/`ListAgents` 工具，跨 session 发消息；`rex send`/`rex capture` 是 Rex CLI 命令，直接读写别的进程屏幕
+
+## 关键差异
+
+官方 [Agent Teams](https://code.claude.com/docs/en/agent-teams) 是同 session 内嵌的 sub-agent——跑完就散、过程黑盒。Fleet 是把每个 worker 拉成**独立 claude 进程**，所以你能开独立窗格看全程、随时接管、跨 session 双向通讯。
+
 ## 灵感
 
 - Anthropic 官方 [Agent Teams / teammate mode](https://code.claude.com/docs/en/agent-teams)（同 session 内嵌版）

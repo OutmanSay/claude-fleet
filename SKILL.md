@@ -29,9 +29,9 @@ allowed-tools:
 
 ## 编制约定
 
-- **旗舰** = 主会话自己（`danco-ef` 之类）
+- **旗舰** = 主会话自己（`<your-flagship-session-id>` 之类）
 - **僚舰** = 右侧 split 出来的 claude 进程，编号 1/2/3，label 写「僚舰-N」或职能名（哨兵/苦力/侦察）
-- 每个僚舰 = 一个 `block:` + 一个 `danco-XX` session ID，**两张身份证都要记**
+- 每个僚舰 = 一个 `block:` + 一个 `<wingman-session-id>` session ID，**两张身份证都要记**
 
 ## 命令
 
@@ -53,7 +53,7 @@ rex split -s "$REX_SESSION" -b <上一个僚舰的block> --split=below --ratio 5
 
 **起来后必做两件事**：
 1. **改名**：`rex block rename -s "$REX_SESSION" <block_id> "僚舰-N"` 或职能名
-2. **对号 session**：`ListAgents` 看新出现的 `danco-XX`（启动时间就是刚才），记下「僚舰-N ↔ block ↔ danco-XX」映射
+2. **对号 session**：`ListAgents` 看新出现的 `<wingman-session-id>`（启动时间就是刚才），记下「僚舰-N ↔ block ↔ <wingman-session-id>」映射
 
 ### `/fleet send <僚舰> <任务>`
 
@@ -67,7 +67,7 @@ rex send-key -s "$REX_SESSION" -b <block_id> enter
 任务文本里**必须带这两条指令**（否则它不回报、可能乱动 rex）：
 
 ```
-干完用 SendMessage 告诉 danco-ef 结果（一句话+关键产物路径）。
+干完用 SendMessage 告诉 <your-flagship-session-id> 结果（一句话+关键产物路径）。
 别动 rex session/window/block/rename。
 ```
 
@@ -89,21 +89,21 @@ rex send-key -s "$REX_SESSION" -b <block_id> enter
 
 ## 通讯协议（已验证 2026-10-28）
 
-- **我 → 僚舰**：`rex send` 打字（推荐，你能看到）或 `SendMessage to danco-XX`
-- **僚舰 → 我**：`SendMessage to danco-ef`（在 prompt 里点我的名字）
+- **我 → 僚舰**：`rex send` 打字（推荐，你能看到）或 `SendMessage to <wingman-session-id>`
+- **僚舰 → 我**：`SendMessage to <your-flagship-session-id>`（在 prompt 里点我的名字）
 - **僚舰 → 僚舰**：也走 `SendMessage`，先告诉它们对方 session 名
 
-`ListAgents` 每行格式：`danco-XX [ref] · interactive · busy|idle · started N ago`。**新起的僚舰 = started 最短的**。
+`ListAgents` 每行格式：`<wingman-session-id> [ref] · interactive · busy|idle · started N ago`。**新起的僚舰 = started 最短的**。
 
 ## 踩过的坑
 
 - ⚠️ **僚舰会改 rex session 名**：claude 启动会触发 SessionStart hook 叫它 rename，而它和我同 session——会改掉我这个 session 的 label。**派活 prompt 里必带「别动 rex session」**。
-- ⚠️ **session 名 ≠ session ID**：僚舰自己 `rex session rename` 后，label 变了但 `danco-XX` ID 不变，SendMessage 仍可达。记映射要记 **ID 不是 label**。
+- ⚠️ **session 名 ≠ session ID**：僚舰自己 `rex session rename` 后，label 变了但 `<wingman-session-id>` ID 不变，SendMessage 仍可达。记映射要记 **ID 不是 label**。
 - ⚠️ **bypass 权限模式才有用**：起僚舰用 `claude`（继承 ~/.claude/settings.json 的 bypassPermissions），普通模式会每步都弹权限框废掉。
 - ⚠️ **新 pane 会抢焦点**：`--focus=false` 必带，否则用户的输入焦点被切走。
 - ⚠️ **跨 session 消息有延迟**：僚舰 idle 时收件快，busy 时会延迟到下个 tool round 才看。急事还是 `rex capture` 直接看屏。
-- ⚠️ **ListAgents 看不到自己**：`danco-ef`（本 session）不在列表里，发消息给它=发给自己。
+- ⚠️ **ListAgents 看不到自己**：`<your-flagship-session-id>`（本 session）不在列表里，发消息给它=发给自己。
 
 ## 收队仪式感（2026-10-28 沉淀）
 
-任务收尾时让僚舰自报一句「我是 danco-XX，block 是 XXX，任务已完成」，主会话核完 SendMessage 一句「收队」——它能听到，然后 `rex block close` 收编。
+任务收尾时让僚舰自报一句「我是 <wingman-session-id>，block 是 XXX，任务已完成」，主会话核完 SendMessage 一句「收队」——它能听到，然后 `rex block close` 收编。
