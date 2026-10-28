@@ -3,10 +3,7 @@ name: fleet
 description: '舰队模式：Rex 终端里把窗格当 worker 用。旗舰=主会话（左格），僚舰=split 出来的独立 claude 进程（右格）。
   触发：/fleet、开舰队、起个僚舰、派个工人、右侧开一格跑 claude、让我能看见它干活、可视委派。
   核心卖点：worker 全程可视 + 人可随时接管 + 跨 session SendMessage 回执。
-  不触发：纯后台跑完就散（→ codex-delegate 看板）；本机外机器（Rex 不管远程）。'
-metadata:
-  openclaw:
-    emoji: 🛳
+  不触发：纯后台跑完就散（用 CC 自己的 sub-agent 就够）；本机外机器（Rex 不管远程）。'
 allowed-tools:
 - Bash
 - SendMessage

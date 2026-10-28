@@ -79,7 +79,7 @@ skill 是放在 `~/.claude/skills/fleet/` 下的 `SKILL.md`——Claude Code 启
 
 - Anthropic 官方 [Agent Teams / teammate mode](https://code.claude.com/docs/en/agent-teams)（同 session 内嵌版）
 - muxboard 的 "what needs me?" 雷达思路
-- Danco 2026-10-28 手搓实战
+- [@OutmanSay](https://github.com/OutmanSay) 2026-10-28 手搓实战
 
 ## License
 
