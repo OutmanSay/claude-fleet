@@ -131,6 +131,7 @@ sleep 1 && rex capture -s "$REX_SESSION" -b <block_id> --trim | tail -3  # 核�
 - ⚠️ **新 pane 会抢焦点**：`--focus=false` 必带，否则用户的输入焦点被切走。
 - ⚠️ **跨 session 消息有延迟**：助理 idle 时收件快，busy 时会延迟到下个 tool round 才看。急事还是 `rex capture` 直接看屏。
 - ⚠️ **ListAgents 看不到自己**：`danco-ef`（本 session）不在列表里，发消息给它=发给自己。
+- ⚠️ **提醒事项用 osascript 不用 calblock**（2026-10-28 实测）：calblock 是 Google Calendar CLI，找的是 Google API 不是本地日历，报"no google calendar named"；sqlite 直改 Reminders .sqlite 三个库都是空的（iCloud 同步没落地）；**osascript 调 Reminders.app 直接操作**，不管底层数据库在哪，一次成功。格式：`osascript -e 'tell application "Reminders" to make new reminder in list "提醒事项" with properties {name:"X", remind me date:date "YYYY-MM-DD HH:MM:SS"}'`
 
 ## 收队仪式感（2026-10-28 沉淀）
 
