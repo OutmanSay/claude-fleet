@@ -117,6 +117,10 @@ rex send-key -s "$REX_SESSION" -b <block_id> enter
 
 - ⚠️ **僚舰会改 rex session 名**：claude 启动会触发 SessionStart hook 叫它 rename，而它和我同 session——会改掉我这个 session 的 label。**派活 prompt 里必带「别动 rex session」**。
 - ⚠️ **僚舰独立跑会断协同**：A 干完 B 不知道，监控类僚舰会重复报已处理项 → 用 `/fleet share` 共享黑板（`/tmp/fleet-shared.log`）当唯一协同总线，派活 prompt 里教它追加格式。
+- ⚠️ **Codex 僚舰没有 SendMessage**（2026-10-28 实测）：`codex` CLI 是异构引擎，没有 CC 的 SendMessage/ListAgents，只能**单向 rex send 派活 + 在窗格里输出**——旗舰须 `rex capture` 轮询读屏，不能等回报。派活 prompt 里别写「SendMessage 给我」，写了它也做不到。
+- ⚠️ **`rex send` 不会自动回车**（2026-10-28 实测）：send 完文字停在输入框（↑标记），必须紧跟 `rex send-key enter`。fleet skill 的 `/fleet send` 流程已含两步，别拆。
+- ⚠️ **Codex 卡住会问「是否继续」**：权限弹窗/敏感操作它会停下来等指示，不会自己动——要么 prompt 里预先授权（"定位弹窗你自己点"），要么捕获到它在等指示时补发指令。
+- ⚠️ **异构僚舰命名**：僚舰-N 编号不变，但职能标引擎——`僚舰-3-codex-跑腿` 比 `僚舰-3-跑腿` 清楚（一看就知道它通讯能力不同）。
 - ⚠️ **session 名 ≠ session ID**：僚舰自己 `rex session rename` 后，label 变了但 `danco-XX` ID 不变，SendMessage 仍可达。记映射要记 **ID 不是 label**。
 - ⚠️ **bypass 权限模式才有用**：起僚舰用 `claude`（继承 ~/.claude/settings.json 的 bypassPermissions），普通模式会每步都弹权限框废掉。
 - ⚠️ **新 pane 会抢焦点**：`--focus=false` 必带，否则用户的输入焦点被切走。
